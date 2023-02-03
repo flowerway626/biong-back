@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 const cartSchema = new Schema({
   p_id: {
     type: ObjectId,
-    ref: 'Products',
+    ref: 'products',
     required: [true, '缺少商品']
   },
   quantity: {
