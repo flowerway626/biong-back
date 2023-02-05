@@ -37,7 +37,7 @@ app.use((_, req, res, next) => {
 
 app.use('/users', userRoute)
 app.use('/products', productRoute)
-// app.use('/orders', orderRoute)
+app.use('/orders', orderRoute)
 
 app.get('/', (req, res) => {
   res.status(200).json({ success: true, message: '' })

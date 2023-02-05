@@ -3,7 +3,6 @@ import products from '../models/products.js'
 // 新增產品
 export const createProduct = async (req, res) => {
   try {
-    console.log(req.body)
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
@@ -13,7 +12,6 @@ export const createProduct = async (req, res) => {
       sell: req.body.sell,
       category: req.body.category
     })
-    console.log(result)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     if (error.name === 'ValidationError') {
@@ -69,6 +67,7 @@ export const getProduct = async (req, res) => {
 // 編輯商品
 export const editProduct = async (req, res) => {
   try {
+    console.log(req)
     // 產品資料更新
     const result = await products.findByIdAndUpdate(req.params.id, {
       name: req.body.name,

@@ -38,7 +38,7 @@ export const login = async (req, res) => {
         account: req.user.account,
         name: req.user.name,
         email: req.user.email,
-        cart: req.user.cart.length,
+        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         role: req.user.role
       }
     })
@@ -64,8 +64,9 @@ export const getUser = async (req, res) => {
     res.status(200).json({
       success: true,
       result: {
+        _id: req.user._id,
         account: req.user.account,
-        cart: req.user.cart,
+        cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         email: req.user.email,
         name: req.user.name,
         role: req.user.role,
@@ -74,6 +75,32 @@ export const getUser = async (req, res) => {
     })
   } catch (error) {
     res.status(500).json({ success: false, message: '取得資料錯誤' })
+  }
+}
+
+// 使用者編輯資料
+export const editUser = async (req, res) => {
+  try {
+    const result = await users.findByIdAndUpdate(req.params.id, {
+      account: req.body.account,
+      name: req.body.name,
+      password: req.body.password,
+      email: req.body.email
+    }, { new: true })
+    console.log(result)
+    res.status(200).json({ success: true, message: '', result })
+    if (!result) {
+      res.status(404).json({ success: false, message: '找不到' })
+    } else {
+      res.status(200).json({ success: true, message: '', result })
+    }
+  } catch (error) {
+    console.log(error)
+    if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
   }
 }
 
@@ -101,7 +128,6 @@ export const editCart = async (req, res) => {
       }
     } else {
       const product = await products.findById(req.body.p_id)
-      console.log(product)
       if (!product || !product.sell) {
         res.status(404).json({ sucess: false, message: '找不到' })
         return
@@ -125,7 +151,8 @@ export const editCart = async (req, res) => {
 export const getCart = async (req, res) => {
   try {
     const result = await users.findById(req.user._id, 'cart').populate('cart.p_id')
-    res.status(200).json({ success: true, message: '', result })
+    res.status(200).json({ success: true, message: '', result: result.cart })
+    console.log(result)
   } catch (error) {
     console.log(error)
     res.status(500).json({ success: false, message: '取得購物車錯誤' })
