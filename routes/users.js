@@ -13,6 +13,6 @@ router.get('/get', auth.jwt, getUser)
 router.get('/cart', auth.jwt, getCart)
 router.post('/cart', content('application/json'), auth.jwt, editCart)
 
-router.post('/:id', content('application/json'), auth.jwt, editUser)
+router.patch('/:id', content('application/json'), auth.jwt, editUser)
 
 export default router

@@ -67,7 +67,6 @@ export const getProduct = async (req, res) => {
 // 編輯商品
 export const editProduct = async (req, res) => {
   try {
-    console.log(req)
     // 產品資料更新
     const result = await products.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
@@ -90,5 +89,20 @@ export const editProduct = async (req, res) => {
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
+  }
+}
+
+export const delProduct = async (req, res) => {
+  try {
+    const result = await products.deleteOne({ _id: req.params.id })
+    console.log(result.deletedCount)
+    if (result.deletedCount === 0) {
+      res.status(404).json({ success: false, message: '找不到此商品' })
+    } else {
+      res.status(200).json({ success: true, message: '', products })
+    }
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }
