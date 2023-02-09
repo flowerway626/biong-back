@@ -3,6 +3,8 @@ import products from '../models/products.js'
 // 新增產品
 export const createProduct = async (req, res) => {
   try {
+    console.log(req.file)
+    // console.log(req.files)
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
@@ -14,6 +16,7 @@ export const createProduct = async (req, res) => {
     })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
+    console.log(error)
     if (error.name === 'ValidationError') {
       res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
     } else {
@@ -94,13 +97,8 @@ export const editProduct = async (req, res) => {
 
 export const delProduct = async (req, res) => {
   try {
-    const result = await products.deleteOne({ _id: req.params.id })
-    console.log(result.deletedCount)
-    if (result.deletedCount === 0) {
-      res.status(404).json({ success: false, message: '找不到此商品' })
-    } else {
-      res.status(200).json({ success: true, message: '', products })
-    }
+    await products.findByIdAndDelete(req.params.id)
+    res.status(200).json({ success: true, message: '' })
   } catch (error) {
     console.log(error)
     res.status(500).json({ success: false, message: '未知錯誤' })

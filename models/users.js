@@ -14,6 +14,18 @@ const cartSchema = new Schema({
   }
 })
 
+const eventSchema = new Schema({
+  e_id: {
+    type: ObjectId,
+    ref: 'events',
+    required: [true, '缺少活動']
+  },
+  phone: {
+    type: String,
+    required: [true, '缺少電話']
+  }
+})
+
 const schema = new Schema({
   account: {
     type: String,
@@ -54,6 +66,10 @@ const schema = new Schema({
   cart: {
     type: [cartSchema],
     default: []
+  },
+  event: {
+    type: [eventSchema],
+    defaule: []
   }
 }, { versionKey: false })
 
