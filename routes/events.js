@@ -3,7 +3,7 @@ import content from '../middleware/content.js'
 import { jwt } from '../middleware/auth.js'
 import upload from '../middleware/upload.js'
 import admin from '../middleware/admin.js'
-import { createEvent, getAllEvent, getEvent, editEvent, delEvent } from '../controllers/events.js'
+import { createEvent, getAllEvent, getEvent, editEvent, delEvent, editMember } from '../controllers/events.js'
 
 const router = Router()
 
@@ -13,7 +13,11 @@ router.post('/', content('multipart/form-data'), jwt, admin, upload, createEvent
 router.get('/', getAllEvent)
 // 查詢單個
 router.get('/:id', getEvent)
+// 新增報名者
+router.patch('/user/:id', jwt, editMember)
 // 修改
 router.patch('/:id', content('multipart/form-data'), jwt, admin, upload, editEvent)
+// 刪除
 router.delete('/:id', jwt, admin, delEvent)
+
 export default router

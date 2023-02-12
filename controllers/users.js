@@ -1,6 +1,7 @@
 import users from '../models/users.js'
 import jwt from 'jsonwebtoken'
 import products from '../models/products.js'
+import events from '../models/events.js'
 
 // 註冊
 export const register = async (req, res) => {
@@ -39,7 +40,9 @@ export const login = async (req, res) => {
         name: req.user.name,
         email: req.user.email,
         cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
-        role: req.user.role
+        role: req.user.role,
+        event: req.user.event,
+        phone: req.user.phone
       }
     })
   } catch (error) {
@@ -71,7 +74,9 @@ export const getUser = async (req, res) => {
         email: req.user.email,
         name: req.user.name,
         role: req.user.role,
-        token: req.user.token
+        token: req.user.token,
+        event: req.user.event,
+        phone: req.user.phone
       }
     })
   } catch (error) {
@@ -163,5 +168,36 @@ export const getCart = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({ success: false, message: '取得購物車錯誤' })
+  }
+}
+
+export const editEvent = async (req, res) => {
+  try {
+    const idx = req.user.event.findIndex((event) => event.e_id.toString() === req.params.id)
+    if (idx > -1) {
+      res.status(400).json({ success: false, message: '已報名' })
+      return
+    } else {
+      const event = await events.findById(req.params.id)
+      if (!event) {
+        res.status(404).json({ success: true, message: '找不到此活動' })
+        return
+      }
+      // 更新參加者的電話
+      await users.findByIdAndUpdate(req.user.id, { phone: req.body.phone }, { new: true })
+      // 把參加活動放進 user 的event 陣列內
+      req.user.event.push({ e_id: req.params.id })
+      await req.user.save()
+    }
+    const result = await users.findById(req.user.id)
+    console.log(result)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
   }
 }

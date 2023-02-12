@@ -19,10 +19,6 @@ const eventSchema = new Schema({
     type: ObjectId,
     ref: 'events',
     required: [true, '缺少活動']
-  },
-  phone: {
-    type: String,
-    required: [true, '缺少電話']
   }
 })
 
@@ -55,6 +51,10 @@ const schema = new Schema({
       message: 'email 格式錯誤'
     }
   },
+  phone: {
+    type: String,
+    default: ''
+  },
   tokens: {
     type: [String],
     default: []
@@ -69,7 +69,7 @@ const schema = new Schema({
   },
   event: {
     type: [eventSchema],
-    defaule: []
+    default: []
   }
 }, { versionKey: false })
 

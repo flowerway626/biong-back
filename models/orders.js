@@ -5,6 +5,10 @@ const orderSchema = new Schema({
     type: [ObjectId],
     ref: 'products',
     required: [true, '缺少商品']
+  },
+  quantity: {
+    type: Number,
+    required: [true, '缺少數量']
   }
 })
 
