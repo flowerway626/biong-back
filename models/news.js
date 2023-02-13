@@ -1,0 +1,26 @@
+import { model, Schema } from 'mongoose'
+
+const schema = new Schema({
+  date: {
+    type: Date,
+    required: [true, '缺少日期']
+  },
+  title: {
+    type: String,
+    required: [true, '缺少標題']
+  },
+  content: {
+    type: String,
+    required: [true, '缺少內文']
+  },
+  image: {
+    type: String,
+    required: [true, '缺少圖片']
+  },
+  tags: {
+    type: Array,
+    default: []
+  }
+}, { versionKey: false })
+
+export default model('news', schema)

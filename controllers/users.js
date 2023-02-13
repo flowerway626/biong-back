@@ -90,7 +90,8 @@ export const editUser = async (req, res) => {
     const result = await users.findByIdAndUpdate(req.params.id, {
       account: req.body.account,
       name: req.body.name,
-      email: req.body.email
+      email: req.body.email,
+      phone: req.body.phone
     }, { new: true })
     if (!result) {
       res.status(404).json({ success: false, message: '找不到' })
@@ -171,6 +172,7 @@ export const getCart = async (req, res) => {
   }
 }
 
+// 使用者 新增活動
 export const editEvent = async (req, res) => {
   try {
     const idx = req.user.event.findIndex((event) => event.e_id.toString() === req.params.id)
@@ -199,5 +201,26 @@ export const editEvent = async (req, res) => {
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
+  }
+}
+
+// 取得所有使用者
+export const getAllUser = async (req, res) => {
+  try {
+    const result = await users.find()
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: '取得資料錯誤' })
+  }
+}
+
+export const getEvent = async (req, res) => {
+  try {
+    const result = await users.findById(req.user._id, 'cart').populate('cart.p_id')
+    res.status(200).json({ success: true, message: '', result: result.cart })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: '取得購物車錯誤' })
   }
 }
