@@ -49,7 +49,7 @@ export const editNew = async (req, res) => {
     if (!result) {
       res.status(400).json({ success: false, message: '找不到' })
     } else {
-      res.status(200).json({ success: true, message: '', result })
+      res.status(200).json({ success: true, meswsage: '', result })
     }
   } catch (error) {
     if (error.name === 'ValidationError') {

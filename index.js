@@ -7,6 +7,7 @@ import productRoute from './routes/products.js'
 import orderRoute from './routes/orders.js'
 import eventRoute from './routes/events.js'
 import newRoute from './routes/news.js'
+import photoRoute from './routes/photos.js'
 import './passport/passport.js'
 
 mongoose.connect(process.env.DB_URL)
@@ -42,6 +43,7 @@ app.use('/products', productRoute)
 app.use('/orders', orderRoute)
 app.use('/events', eventRoute)
 app.use('/news', newRoute)
+app.use('/photos', photoRoute)
 
 app.get('/', (req, res) => {
   res.status(200).json({ success: true, message: '' })

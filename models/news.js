@@ -3,6 +3,7 @@ import { model, Schema } from 'mongoose'
 const schema = new Schema({
   date: {
     type: Date,
+    default: Date.now,
     required: [true, '缺少日期']
   },
   title: {
@@ -16,10 +17,6 @@ const schema = new Schema({
   image: {
     type: String,
     required: [true, '缺少圖片']
-  },
-  tags: {
-    type: Array,
-    default: []
   }
 }, { versionKey: false })
 

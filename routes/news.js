@@ -8,7 +8,7 @@ import { creatwNew, getNew, getAllNew, editNew, deleteNew } from '../controllers
 const router = Router()
 
 router.post('/', content('multipart/form-data'), jwt, admin, upload, creatwNew)
-router.get('/all', getAllNew)
+router.get('/', getAllNew)
 router.get('/:id', getNew)
 router.patch('/:id', content('multipart/form-data'), jwt, admin, upload, editNew)
 router.delete('/:id', jwt, admin, deleteNew)
