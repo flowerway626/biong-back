@@ -6,9 +6,10 @@ export const createEvent = async (req, res) => {
     const result = await events.create({
       name: req.body.name,
       description: req.body.description,
-      date: req.body.date,
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
       place: req.body.place,
-      image: req.file?.path,
+      image: req.files?.image?.[0]?.path || '',
       number: req.body.number
     })
     res.status(200).json({ success: true, message: '', result })
@@ -34,7 +35,7 @@ export const getAllEvent = async (req, res) => {
 // 查詢單一活動
 export const getEvent = async (req, res) => {
   try {
-    const result = await events.findById(req.params.id)
+    const result = await events.findById(req.params.id).populate('member.u_id')
     if (!result) {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
@@ -49,12 +50,15 @@ export const getEvent = async (req, res) => {
 // 編輯活動
 export const editEvent = async (req, res) => {
   try {
+    const event = await events.findById(req.params.id)
+    console.log(event)
     const result = await events.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       description: req.body.description,
-      date: req.body.date,
+      dateStart: req.body.dateStart,
+      dateEnd: req.body.dateEnd,
       place: req.body.place,
-      image: req.file?.path,
+      image: req.files?.image?.[0]?.path || event.image,
       number: req.body.number
     }, { new: true })
     if (!result) {
@@ -69,6 +73,7 @@ export const editEvent = async (req, res) => {
     } else if (error.name === 'CastError') {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
+      console.log(error)
       res.status(500).json({ success: false, message: '未知錯誤' })
     }
   }

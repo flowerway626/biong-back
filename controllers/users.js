@@ -186,13 +186,12 @@ export const editEvent = async (req, res) => {
         return
       }
       // 更新參加者的電話
-      await users.findByIdAndUpdate(req.user.id, { phone: req.body.phone }, { new: true })
+      await users.findByIdAndUpdate(req.user._id, { phone: req.body.phone }, { new: true })
       // 把參加活動放進 user 的event 陣列內
       req.user.event.push({ e_id: req.params.id })
       await req.user.save()
     }
-    const result = await users.findById(req.user.id)
-    console.log(result)
+    const result = await users.findById(req.user.id).populate('event.e_id')
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
@@ -217,10 +216,10 @@ export const getAllUser = async (req, res) => {
 
 export const getEvent = async (req, res) => {
   try {
-    const result = await users.findById(req.user._id, 'cart').populate('cart.p_id')
-    res.status(200).json({ success: true, message: '', result: result.cart })
+    const result = await users.findById(req.user._id, 'event').populate('event.e_id')
+    res.status(200).json({ success: true, message: '', result: result.event })
   } catch (error) {
     console.log(error)
-    res.status(500).json({ success: false, message: '取得購物車錯誤' })
+    res.status(500).json({ success: false, message: '取得使用者活動錯誤' })
   }
 }

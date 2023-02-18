@@ -53,13 +53,12 @@ export const editPhoto = async (req, res) => {
     console.log(req.body)
     // 資料更新
     const photo = await photos.findById(req.params.id)
-    const newImages = photo.images.filter(image => !req.body?.delImages?.includes(image)).concat(req.files?.images?.map(file => file.path)).filter(image => image !== null && image !== undefined)
-
+    const newImages = photo.images.filter(image => !req.body?.delImages?.includes(image))
+    newImages.concat(req.files?.images?.map(file => file.path)).filter(image => image !== null && image !== undefined)
     const result = await photos.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       tags: req.body.tags,
       image: req.files?.image?.[0]?.path || photo.image,
-
       images: newImages
     }, { new: true })
     if (!result) {

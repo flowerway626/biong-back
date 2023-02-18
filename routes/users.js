@@ -2,7 +2,7 @@ import { Router } from 'express'
 import content from '../middleware/content.js'
 import admin from '../middleware/admin.js'
 import * as auth from '../middleware/auth.js'
-import { register, login, logout, extend, getUser, getAllUser, editCart, editEvent, getCart, editUser } from '../controllers/users.js'
+import { register, login, logout, extend, getUser, getAllUser, editCart, editEvent, getEvent, getCart, editUser } from '../controllers/users.js'
 const router = Router()
 
 // 註冊/登入/登出
@@ -19,8 +19,10 @@ router.get('/all', auth.jwt, admin, getAllUser)
 router.get('/cart', auth.jwt, getCart)
 router.post('/cart', content('application/json'), auth.jwt, editCart)
 
-// 活動
-router.patch('/event/:id', auth.jwt, editEvent)
+// 查詢活動
+router.get('/event', auth.jwt, getEvent)
+// 報名活動
+router.patch('/event/:id', content('application/json'), auth.jwt, editEvent)
 
 // 資料編輯
 router.patch('/:id', content('application/json'), auth.jwt, editUser)

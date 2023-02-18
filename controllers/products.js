@@ -3,14 +3,12 @@ import products from '../models/products.js'
 // 新增產品
 export const createProduct = async (req, res) => {
   try {
-    console.log(req.file)
-    // console.log(req.files)
     const result = await products.create({
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
       // 沒有上傳圖片時，req.file === undefined
-      image: req.file?.path || '',
+      image: req.files?.image?.[0]?.path || '',
       sell: req.body.sell,
       category: req.body.category
     })
@@ -75,7 +73,7 @@ export const editProduct = async (req, res) => {
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
-      image: req.file?.path,
+      image: req.files?.image?.[0]?.path,
       sell: req.body.sell,
       category: req.body.category
     }, { new: true })

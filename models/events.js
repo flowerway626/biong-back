@@ -1,17 +1,17 @@
-import { Schema, model } from 'mongoose'
+import { Schema, model, ObjectId } from 'mongoose'
 
-// const eventSchema = new Schema({
-//   // 報名者資訊
-//   u_id: {
-//     type: ObjectId,
-//     ref: 'users',
-//     required: [true, '缺少報名者']
-//   },
-//   // 報名者送出報名日期
-//   date: {
-//     type: Date
-//   }
-// })
+const eventSchema = new Schema({
+  // 報名者資訊
+  u_id: {
+    type: ObjectId,
+    ref: 'users',
+    required: [true, '缺少報名者']
+  },
+  // 報名者送出報名日期
+  date: {
+    type: Date
+  }
+})
 
 const schema = new Schema({
   name: {
@@ -22,9 +22,13 @@ const schema = new Schema({
     type: String,
     required: [true, '缺少活動說明']
   },
-  date: {
-    type: Date,
-    required: [true, '缺少活動日期']
+  dateStart: {
+    type: String,
+    required: [true, '缺少開始日期']
+  },
+  dateEnd: {
+    type: String,
+    required: [true, '缺少結束日期']
   },
   place: {
     type: String,
@@ -41,7 +45,7 @@ const schema = new Schema({
   },
   // 報名人數資訊 (報名者_id、報名日期)
   member: {
-    type: Array,
+    type: [eventSchema],
     default: []
   }
 }, { versionKey: false })

@@ -3,11 +3,9 @@ import news from '../models/news.js'
 export const creatwNew = async (req, res) => {
   try {
     const result = await news.create({
-      date: req.body.date,
       title: req.body.title,
       content: req.body.content,
-      image: req.file?.path || '',
-      tags: req.body.tags
+      image: req.file?.path || ''
     })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
@@ -43,13 +41,12 @@ export const editNew = async (req, res) => {
       date: req.body.date,
       title: req.body.title,
       content: req.body.content,
-      image: req.file?.path,
-      tags: req.body.tags
+      image: req.file?.path
     })
     if (!result) {
       res.status(400).json({ success: false, message: '找不到' })
     } else {
-      res.status(200).json({ success: true, meswsage: '', result })
+      res.status(200).json({ success: true, message: '', result })
     }
   } catch (error) {
     if (error.name === 'ValidationError') {

@@ -16,7 +16,7 @@ const schema = new Schema({
   },
   image: {
     type: String,
-    required: [true, '缺少圖片']
+    default: ''
   }
 }, { versionKey: false })
 
