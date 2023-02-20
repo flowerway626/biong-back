@@ -59,7 +59,7 @@ export const editNew = async (req, res) => {
 
 export const deleteNew = async (req, res) => {
   try {
-    await news.findByIdAndDelete(res.params.id)
+    await news.findByIdAndDelete(req.params.id)
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })

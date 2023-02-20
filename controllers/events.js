@@ -51,7 +51,6 @@ export const getEvent = async (req, res) => {
 export const editEvent = async (req, res) => {
   try {
     const event = await events.findById(req.params.id)
-    console.log(event)
     const result = await events.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       description: req.body.description,
