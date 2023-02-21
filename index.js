@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import cors from 'cors'
+import https from 'https'
 import userRoute from './routes/users.js'
 import productRoute from './routes/products.js'
 import orderRoute from './routes/orders.js'
@@ -45,9 +46,11 @@ app.use('/events', eventRoute)
 app.use('/news', newRoute)
 app.use('/photos', photoRoute)
 
-app.get('/', (req, res) => {
-  res.status(200).json({ success: true, message: '' })
-})
+if (process.env.render) {
+  setInterval(() => {
+    https.get(process.env.render)
+  }, 1000 * 60 * 5)
+}
 
 app.use('*', (req, res) => {
   res.status(404).json({ success: false, message: '未知錯誤' })
