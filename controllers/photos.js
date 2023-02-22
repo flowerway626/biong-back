@@ -50,7 +50,6 @@ export const getPhoto = async (req, res) => {
 
 export const editPhoto = async (req, res) => {
   try {
-    console.log(req.body)
     // 資料更新
     const photo = await photos.findById(req.params.id)
     const newImages = photo.images.filter(image => !req.body?.delImages?.includes(image))

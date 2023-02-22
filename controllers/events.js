@@ -81,7 +81,6 @@ export const editEvent = async (req, res) => {
 // 刪除活動
 export const delEvent = async (req, res) => {
   try {
-    console.log(req.params.id)
     await events.findByIdAndDelete(req.params.id)
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
@@ -94,7 +93,6 @@ export const editMember = async (req, res) => {
   try {
     const member = await events.findById(req.params.id, 'member').populate('member.u_id')
     const idx = member.member.findIndex((user) => user.u_id.toString() === req.user._id.toString())
-    console.log(idx)
     if (idx === -1) {
       await events.updateOne({ _id: req.params.id }, {
         $push: {

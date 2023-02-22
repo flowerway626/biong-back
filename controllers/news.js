@@ -19,7 +19,7 @@ export const creatwNew = async (req, res) => {
 
 export const getNew = async (req, res) => {
   try {
-    const result = await news.find({ _id: req.params.id })
+    const result = await news.findById(req.params.id)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })

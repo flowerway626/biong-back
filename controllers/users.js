@@ -84,7 +84,7 @@ export const getUser = async (req, res) => {
   }
 }
 
-// 使用者編輯資料
+// 使用者 編輯資料
 export const editUser = async (req, res) => {
   try {
     const result = await users.findByIdAndUpdate(req.params.id, {
@@ -100,7 +100,30 @@ export const editUser = async (req, res) => {
     }
   } catch (error) {
     console.log(error)
-    if (error.name === 'CastError') {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
+      res.status(404).json({ success: false, message: '找不到' })
+    } else {
+      res.status(500).json({ success: false, message: '未知錯誤' })
+    }
+  }
+}
+
+// 管理者 編輯使用者資料
+export const adminEditUser = async (req, res) => {
+  try {
+    const result = await users.findByIdAndUpdate(req.body._id, {
+      account: req.body.account,
+      name: req.body.name,
+      email: req.body.email,
+      phone: req.body.phone
+    }, { new: true })
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    if (error.name === 'ValidationError') {
+      res.status(400).json({ success: false, message: error.errors[Object.keys(error.errors)[0]].message })
+    } else if (error.name === 'CastError') {
       res.status(404).json({ success: false, message: '找不到' })
     } else {
       res.status(500).json({ success: false, message: '未知錯誤' })
@@ -203,6 +226,17 @@ export const editEvent = async (req, res) => {
   }
 }
 
+// 使用者 取得報名過的活動
+export const getEvent = async (req, res) => {
+  try {
+    const result = await users.findById(req.user._id, 'event').populate('event.e_id')
+    res.status(200).json({ success: true, message: '', result: result.event })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: '取得使用者活動錯誤' })
+  }
+}
+
 // 取得所有使用者
 export const getAllUser = async (req, res) => {
   try {
@@ -211,15 +245,5 @@ export const getAllUser = async (req, res) => {
   } catch (error) {
     console.log(error)
     res.status(500).json({ success: false, message: '取得資料錯誤' })
-  }
-}
-
-export const getEvent = async (req, res) => {
-  try {
-    const result = await users.findById(req.user._id, 'event').populate('event.e_id')
-    res.status(200).json({ success: true, message: '', result: result.event })
-  } catch (error) {
-    console.log(error)
-    res.status(500).json({ success: false, message: '取得使用者活動錯誤' })
   }
 }
