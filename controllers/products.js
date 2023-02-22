@@ -45,6 +45,15 @@ export const getAllProducts = async (req, res) => {
   }
 }
 
+export const getSixProducts = async (req, res) => {
+  try {
+    const result = await products.find().sort({ _id: -1 }).limit(6)
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
 // 查詢單個商品
 export const getProduct = async (req, res) => {
   try {

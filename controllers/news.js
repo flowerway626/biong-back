@@ -5,7 +5,7 @@ export const creatwNew = async (req, res) => {
     const result = await news.create({
       title: req.body.title,
       content: req.body.content,
-      image: req.file?.path || ''
+      image: req.files?.path || ''
     })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
@@ -35,13 +35,23 @@ export const getAllNew = async (req, res) => {
   }
 }
 
+// 首頁顯示最新六筆
+export const getSixNew = async (req, res) => {
+  try {
+    const result = await (await news.find().sort({ _id: -1 }).limit(6))
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
 export const editNew = async (req, res) => {
   try {
     const result = await news.findByIdAndUpdate(req.params.id, {
       date: req.body.date,
       title: req.body.title,
       content: req.body.content,
-      image: req.file?.path
+      image: req.files?.image?.[0]?.path
     })
     if (!result) {
       res.status(400).json({ success: false, message: '找不到' })
