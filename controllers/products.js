@@ -1,4 +1,5 @@
 import products from '../models/products.js'
+import { Types } from 'mongoose'
 
 // 新增產品
 export const createProduct = async (req, res) => {
@@ -106,6 +107,25 @@ export const delProduct = async (req, res) => {
   try {
     await products.findByIdAndDelete(req.params.id)
     res.status(200).json({ success: true, message: '' })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+export const getRecomProducts = async (req, res) => {
+  try {
+    const result = await products.aggregate([
+      {
+        // $match 過濾 $ne 不等於 => 過濾掉 _id 不等於該的 id
+        $match: { _id: { $ne: Types.ObjectId(req.params.id) } }
+      },
+      {
+        // 隨機選擇數量
+        $sample: { size: 4 }
+      }
+    ])
+    res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
     res.status(500).json({ success: false, message: '未知錯誤' })

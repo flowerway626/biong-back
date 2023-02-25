@@ -1,4 +1,5 @@
 import news from '../models/news.js'
+import { Types } from 'mongoose'
 
 export const creatwNew = async (req, res) => {
   try {
@@ -38,7 +39,7 @@ export const getAllNew = async (req, res) => {
 // 首頁顯示最新六筆
 export const getSixNew = async (req, res) => {
   try {
-    const result = await (await news.find().sort({ _id: -1 }).limit(6))
+    const result = await news.find().sort({ _id: -1 }).limit(6)
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     res.status(500).json({ success: false, message: '未知錯誤' })
@@ -72,6 +73,26 @@ export const deleteNew = async (req, res) => {
     await news.findByIdAndDelete(req.params.id)
     res.status(200).json({ success: true, message: '' })
   } catch (error) {
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
+// 取推薦商品
+export const getRecomNew = async (req, res) => {
+  try {
+    const result = await news.aggregate([
+      {
+        // $match 過濾 $ne 不等於 => 過濾掉 _id 不等於該產品的 id
+        $match: { _id: { $ne: Types.ObjectId(req.params.id) } }
+      },
+      {
+        // 隨機選擇數量
+        $sample: { size: 4 }
+      }
+    ])
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
     res.status(500).json({ success: false, message: '未知錯誤' })
   }
 }

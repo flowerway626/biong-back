@@ -3,7 +3,7 @@ import content from '../middleware/content.js'
 import { jwt } from '../middleware/auth.js'
 import admin from '../middleware/admin.js'
 import upload from '../middleware/upload.js'
-import { createProduct, getSellProducts, getAllProducts, getSixProducts, getProduct, editProduct, delProduct } from '../controllers/products.js'
+import { createProduct, getSellProducts, getAllProducts, getSixProducts, getRecomProducts, getProduct, editProduct, delProduct } from '../controllers/products.js'
 
 const router = Router()
 
@@ -11,6 +11,7 @@ router.post('/', content('multipart/form-data'), jwt, admin, upload, createProdu
 router.get('/', getSellProducts)
 router.get('/all', jwt, admin, getAllProducts)
 router.get('/index', getSixProducts)
+router.get('/recom', getRecomProducts)
 
 router.get('/:id', getProduct)
 router.patch('/:id', content('multipart/form-data'), jwt, admin, upload, editProduct)

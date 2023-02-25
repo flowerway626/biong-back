@@ -240,7 +240,7 @@ export const getEvent = async (req, res) => {
 // 取得所有使用者
 export const getAllUser = async (req, res) => {
   try {
-    const result = await users.find()
+    const result = await users.find({ role: 0 })
     res.status(200).json({ success: true, message: '', result })
   } catch (error) {
     console.log(error)
