@@ -70,6 +70,7 @@ export const getUser = async (req, res) => {
       result: {
         _id: req.user._id,
         account: req.user.account,
+        password: req.user.password,
         cart: req.user.cart.reduce((total, current) => total + current.quantity, 0),
         email: req.user.email,
         name: req.user.name,
@@ -89,6 +90,7 @@ export const editUser = async (req, res) => {
   try {
     const result = await users.findByIdAndUpdate(req.params.id, {
       account: req.body.account,
+      password: req.body.password,
       name: req.body.name,
       email: req.body.email,
       phone: req.body.phone
