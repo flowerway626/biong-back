@@ -231,7 +231,7 @@ export const editEvent = async (req, res) => {
 // 使用者 取得報名過的活動
 export const getEvent = async (req, res) => {
   try {
-    const result = await users.findById(req.user._id, 'event').populate('event.e_id')
+    const result = await users.findById(req.user._id, 'event').populate('event.e_id', 'dateStart dateEnd name image')
     res.status(200).json({ success: true, message: '', result: result.event })
   } catch (error) {
     console.log(error)
