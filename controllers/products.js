@@ -118,7 +118,7 @@ export const getRecomProducts = async (req, res) => {
     const result = await products.aggregate([
       {
         // $match 過濾 $ne 不等於 => 過濾掉 _id 不等於該的 id
-        $match: { _id: { $ne: Types.ObjectId(req.params.id) } }
+        $match: { sell: true, _id: { $ne: Types.ObjectId(req.params.id) } }
       },
       {
         // 隨機選擇數量
