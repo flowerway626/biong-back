@@ -92,7 +92,7 @@ export const delEvent = async (req, res) => {
 export const editMember = async (req, res) => {
   try {
     const member = await events.findById(req.params.id, 'member').populate('member.u_id')
-    const idx = member.member.findIndex((user) => user.u_id.toString() === req.user._id.toString())
+    const idx = member.member.findIndex((user) => user.u_id === req.user._id)
     if (idx === -1) {
       await events.updateOne({ _id: req.params.id }, {
         $push: {
