@@ -2,6 +2,7 @@ import passport from 'passport'
 import jsonwebtoken from 'jsonwebtoken'
 
 export const login = (req, res, next) => {
+  // 使用 passport.js 中的 passport.authenticate() 驗證使用者登入
   passport.authenticate('login', { session: false }, (error, user, info) => {
     if (error || !user) {
       if (info) {
@@ -19,6 +20,7 @@ export const login = (req, res, next) => {
 export const jwt = (req, res, next) => {
   passport.authenticate('jwt', { session: false }, (error, data, info) => {
     if (error || !data) {
+      // 如果是 JWT 解譯錯誤 => 過期、SECERT 對不上
       if (info instanceof jsonwebtoken.JsonWebTokenError) {
         return res.status(401).json({ sucess: false, message: 'JWT 錯誤' })
       } else {
