@@ -47,6 +47,20 @@ export const getEvent = async (req, res) => {
   }
 }
 
+export const getChartEvent = async (req, res) => {
+  try {
+    const all = await events.find()
+    const result = []
+    all.forEach((val, idx, arr) => {
+      result.push({ name: arr[idx].name, count: arr[idx].member.length })
+    })
+    res.status(200).json({ success: true, message: '', result })
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({ success: false, message: '未知錯誤' })
+  }
+}
+
 // 編輯活動
 export const editEvent = async (req, res) => {
   try {

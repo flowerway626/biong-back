@@ -3,7 +3,7 @@ import content from '../middleware/content.js'
 import { jwt } from '../middleware/auth.js'
 import upload from '../middleware/upload.js'
 import admin from '../middleware/admin.js'
-import { createEvent, getAllEvent, getEvent, editEvent, delEvent, editMember } from '../controllers/events.js'
+import { createEvent, getAllEvent, getEvent, getChartEvent, editEvent, delEvent, editMember } from '../controllers/events.js'
 
 const router = Router()
 
@@ -11,6 +11,9 @@ const router = Router()
 router.post('/', content('multipart/form-data'), jwt, admin, upload, createEvent)
 // 查詢所有
 router.get('/', getAllEvent)
+
+router.get('/chart', jwt, admin, getChartEvent)
+
 // 查詢單個
 router.get('/:id', getEvent)
 // 新增報名者
