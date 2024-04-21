@@ -40,7 +40,7 @@ export default (req, res, next) => {
       }
       res.status(400).json({ success: false, message })
     } else if (error) {
-      res.status(500).json({ success: false, message: '未知錯誤' })
+      res.status(500).json({ success: false, message: '檔案未知錯誤' })
     } else {
       next()
     }

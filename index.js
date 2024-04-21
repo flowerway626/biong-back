@@ -9,6 +9,7 @@ import orderRoute from './routes/orders.js'
 import eventRoute from './routes/events.js'
 import newRoute from './routes/news.js'
 import photoRoute from './routes/photos.js'
+import aboutRoute from './routes/abouts.js'
 import './passport/passport.js'
 
 mongoose.connect(process.env.DB_URL)
@@ -50,6 +51,7 @@ app.use('/orders', orderRoute)
 app.use('/events', eventRoute)
 app.use('/news', newRoute)
 app.use('/photos', photoRoute)
+app.use('/abouts', aboutRoute)
 
 // 定時喚醒 render 不用再等待撈資料載入
 if (process.env.render) {
