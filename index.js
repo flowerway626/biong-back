@@ -56,11 +56,11 @@ app.use('/abouts', aboutRoute)
 app.use('/members', memberRoute)
 
 // 定時喚醒 render 不用再等待撈資料載入
-if (process.env.render) {
-  setInterval(() => {
-    https.get(process.env.render)
-  }, 1000 * 60 * 5)
-}
+// if (process.env.render) {
+//   setInterval(() => {
+//     https.get(process.env.render)
+//   }, 1000 * 60 * 5)
+// }
 
 app.use('*', (req, res) => {
   res.status(404).json({ success: false, message: '未知錯誤' })
